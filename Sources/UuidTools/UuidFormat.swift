@@ -104,7 +104,15 @@ public extension UuidFormat {
     ///
     /// - SeeAlso: ``UuidFormat/init(detectingFormatIn:)``
     func convert(_ formattedUuid: String) throws(Error) -> String {
-        let detectedFormat = try Self(detectingFormatIn: formattedUuid)
+        let detectedFormat: Self
+        
+        do {
+            detectedFormat = try Self(detectingFormatIn: formattedUuid)
+        }
+        catch .couldNotDetectFormat {
+            throw .malformed(expected: self)
+        }
+        
         guard self != detectedFormat else { return formattedUuid } // if it's already in this format, do nothing
         return try self.apply(to: detectedFormat.parse(formattedUuid))
     }

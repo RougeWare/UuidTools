@@ -56,35 +56,71 @@ struct Test_UuidFormat {
     }
     
     
-    // MARK: - uuidFormat.apply(to:UUID)
+    // MARK: - Apply format to UUID
     
-    @Test("uuidFormat.apply(to:UUID)", arguments: UuidFormat.allCases)
-    func apply_to_UUID(_ targetFormat: UuidFormat) async throws {
+    @Test("Apply format to UUID", arguments: UuidFormat.allCases)
+    func apply_to_UUID(_ targetFormat: UuidFormat) async {
         for precomputed in UuidFormat.precomputedFormats {
             #expect(precomputed[targetFormat] == targetFormat.apply(to: precomputed.uuid))
+            #expect(precomputed[targetFormat] == precomputed.uuid.format(as: targetFormat))
         }
     }
     
     
     
-    // MARK: - uuidFormat.convert(_:)
+    // MARK: - Convert string to string using explicit format
     
-    @Test("uuidFormat.convert(_:)", arguments: UuidFormat.allCases)
-    func convert(_ targetFormat: UuidFormat) async throws {
+    @Test("Convert string to string using explicit format", arguments: UuidFormat.allCases)
+    func convertStringToStringUsingExplicitFormat(_ targetFormat: UuidFormat) async throws {
         for precomputed in UuidFormat.precomputedFormats {
-            #expect(try targetFormat.convert(precomputed.standard) == precomputed[targetFormat])
+            for inputFormat in UuidFormat.allCases {
+                #expect(try targetFormat.convert(precomputed[inputFormat]) == precomputed[targetFormat])
+            }
+        }
+        
+        for undetectableFormat in UuidFormat.exampleUndetectableFormats {
+            #expect(throws: UuidFormat.Error.malformed(expected: targetFormat)) {
+                try targetFormat.convert(undetectableFormat)
+            }
         }
     }
     
     
     
-    // MARK: - uuidFormat.parse(_:)
+    // MARK: - Convert string to UUID using explicit format
     
-    @Test("UuidFormat.parse(_:)", arguments: UuidFormat.allCases)
-    func parse(_ targetFormat: UuidFormat) async throws {
+    @Test("Convert string to UUID using explicit format", arguments: UuidFormat.allCases)
+    func convertStringToUuidUsingExplicitFormat(_ targetFormat: UuidFormat) async throws {
+        for precomputed in UuidFormat.precomputedFormats {
+            #expect(try UUID(precomputed[targetFormat], format: targetFormat) == precomputed.uuid)
+        }
+        
+        for undetectableFormat in UuidFormat.exampleUndetectableFormats {
+            #expect(throws: UuidFormat.Error.malformed(expected: targetFormat)) {
+                try UUID(undetectableFormat, format: targetFormat)
+            }
+        }
+    }
+    
+    
+    
+    // MARK: - Convert string to UUID by guessing format
+    
+    @Test("Convert string to UUID by guessing format", arguments: UuidFormat.allCases)
+    func convertStringToUuidByGuessingFormat(_ targetFormat: UuidFormat) async throws {
         for precomputed in UuidFormat.precomputedFormats {
             #expect(try UuidFormat.parse(precomputed[targetFormat]) == precomputed.uuid)
             #expect(try UUID(precomputed[targetFormat]) == precomputed.uuid)
+        }
+        
+        for undetectableFormat in UuidFormat.exampleUndetectableFormats {
+            #expect(throws: UuidFormat.Error.couldNotDetectFormat) {
+                try UUID(undetectableFormat)
+            }
+            
+            #expect(throws: UuidFormat.Error.couldNotDetectFormat) {
+                try UuidFormat.parse(undetectableFormat)
+            }
         }
     }
     

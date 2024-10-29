@@ -67,3 +67,13 @@ extension UuidFormat {
         }
     }
 }
+
+
+
+extension UuidFormat {
+    static let exampleUndetectableFormats: [String] = [
+        "I'm not a UUID at all 😈",
+        "",
+        "2D3FB6B6090D4FBD8AC2428DC536FFE8",
+    ]
+}
