@@ -161,27 +161,14 @@ public extension UuidFormat {
 
 public extension UUID {
     
-    /// Converts the given string to a UUID, assuming it's in the given format.
+    /// Applies the given format to this UUID.
     ///
-    /// ### Example
-    /// ```swift
-    /// let parsed1 = try UUID("LT+2tgkNT72KwkKNxTb/6A", format: .truncatedBase64)
-    /// print(parsed1) // 2D3FB6B6-090D-4FBD-8AC2-428DC536FFE8
+    /// This always succeeds.
     ///
-    /// let parsed2 = try UUID("LT+2tgkNT72KwkKNxTb/6A", format: .standard)
-    ///     // throws: I expected a UUID formatted as standard (hex), but I got something different
-    /// ```
-    ///
-    /// - Parameters:
-    ///   - formattedUuid: The string which is a well-formatted UUID in this format
-    ///   - format:        _optional_ - The format which you know the given string is in.
-    ///                    While this format is optional, providing it can significantly improve performance.
-    ///                    Omitting this format argument means that the format will be auto-detected by comparing the string against all known formats until one matches.
-    ///                    That is to say, prividing this argument means this initializer is `O(1)` performance complexity, but omitting this argument changes that  to `O(n)` where `n` is the number of formats this package knows about.
-    ///
-    /// - Throws: a ``UuidFormat/Error`` if something goes horribly wrong (for example: you pass a string which doesn't match this format. Horrid!)
-    init(_ formattedUuid: String, format: UuidFormat) throws(UuidFormat.Error) {
-        self = try format.parse(formattedUuid)
+    /// - Parameter formattedUuid: The string which is a well-formatted UUID in this format
+    /// - Returns: The well-formatted string version of the given UUID
+    func format(as format: UuidFormat) -> String {
+        format.apply(to: self)
     }
     
     
@@ -209,14 +196,27 @@ public extension UUID {
     }
     
     
-    /// Applies the given format to this UUID.
+    /// Converts the given string to a UUID, assuming it's in the given format.
     ///
-    /// This always succeeds.
+    /// ### Example
+    /// ```swift
+    /// let parsed1 = try UUID("LT+2tgkNT72KwkKNxTb/6A", format: .truncatedBase64)
+    /// print(parsed1) // 2D3FB6B6-090D-4FBD-8AC2-428DC536FFE8
     ///
-    /// - Parameter formattedUuid: The string which is a well-formatted UUID in this format
-    /// - Returns: The well-formatted string version of the given UUID
-    func format(as format: UuidFormat) -> String {
-        format.apply(to: self)
+    /// let parsed2 = try UUID("LT+2tgkNT72KwkKNxTb/6A", format: .standard)
+    ///     // throws: I expected a UUID formatted as standard (hex), but I got something different
+    /// ```
+    ///
+    /// - Parameters:
+    ///   - formattedUuid: The string which is a well-formatted UUID in this format
+    ///   - format:        _optional_ - The format which you know the given string is in.
+    ///                    While this format is optional, providing it can significantly improve performance.
+    ///                    Omitting this format argument means that the format will be auto-detected by comparing the string against all known formats until one matches.
+    ///                    That is to say, prividing this argument means this initializer is `O(1)` performance complexity, but omitting this argument changes that  to `O(n)` where `n` is the number of formats this package knows about.
+    ///
+    /// - Throws: a ``UuidFormat/Error`` if something goes horribly wrong (for example: you pass a string which doesn't match this format. Horrid!)
+    init(_ formattedUuid: String, format: UuidFormat) throws(UuidFormat.Error) {
+        self = try format.parse(formattedUuid)
     }
 }
 
