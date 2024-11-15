@@ -23,7 +23,10 @@ let package = Package(
     
     targets: [
         .target(
-            name: "UuidTools"
+            name: "UuidTools",
+            swiftSettings: [
+                .enableUpcomingFeature("BareSlashRegexLiterals"),
+            ]
         ),
         
         .executableTarget(
@@ -45,6 +48,7 @@ let package = Package(
 
 
 
+#if DEBUG
 for target in package.targets {
     target.swiftSettings = target.swiftSettings ?? []
     target.swiftSettings?.append(
@@ -52,7 +56,7 @@ for target in package.targets {
             "-warnings-as-errors",
 //            "-Xfrontend", "-warn-concurrency",
             "-Xfrontend", "-enable-actor-data-race-checks",
-            "-enable-bare-slash-regex",
         ])
     )
 }
+#endif
