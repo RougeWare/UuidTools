@@ -65,7 +65,7 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "convert --to=truncatedBase64 7037AE0B9-0E1D-CFFE-DAE3-C67018E80C4A"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--help"
@@ -74,6 +74,10 @@
          <CommandLineArgument
             argument = ""
             isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "help convert"
+            isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
    </LaunchAction>

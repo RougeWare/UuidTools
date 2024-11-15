@@ -49,22 +49,17 @@ struct kyuuid: ParsableCommand {
 
 
 private var formatsDiscussion: String {
-    var discussion = """
+    """
     FORMATS:
     
     This utility offers \(UuidFormat.allCases.count) different formatting options:
     
+    \(UuidFormat.allCases.map { format in
     """
-    
-    for format in UuidFormat.allCases {
-        discussion += """
-            \(format.rawValue):  \(format.discussion)
-                Example: \(format.apply(to: .example))
-        
-        
-        """
-    }
+        \(format.rawValue):  \(format.discussion)
+            Example: \(format.apply(to: .example))
     
     
-    return discussion
+    """}.joined())
+    """
 }

@@ -4,7 +4,7 @@
 //  Adapted from https://gist.github.com/xsleonard/b28573142215e25858bebb9ba907829c#file-uuid-extensions-swift
 //
 
-import Foundation
+@_exported import Foundation
 
 
 
@@ -21,23 +21,23 @@ public extension UUID {
     var integers: (UInt64, UInt64) {
         // UUID is 128-bit, we need two 64-bit values to represent it
         (
-              UInt64(self.uuid.0 )
-            | UInt64(self.uuid.1 ) <<  8
-            | UInt64(self.uuid.2 ) << (8 * 2)
-            | UInt64(self.uuid.3 ) << (8 * 3)
-            | UInt64(self.uuid.4 ) << (8 * 4)
-            | UInt64(self.uuid.5 ) << (8 * 5)
-            | UInt64(self.uuid.6 ) << (8 * 6)
-            | UInt64(self.uuid.7 ) << (8 * 7)
+              UInt64(self.uuid.7 )
+            | UInt64(self.uuid.6 ) <<  8
+            | UInt64(self.uuid.5 ) << (8 * 2)
+            | UInt64(self.uuid.4 ) << (8 * 3)
+            | UInt64(self.uuid.3 ) << (8 * 4)
+            | UInt64(self.uuid.2 ) << (8 * 5)
+            | UInt64(self.uuid.1 ) << (8 * 6)
+            | UInt64(self.uuid.0 ) << (8 * 7)
               ,
-              UInt64(self.uuid.8 )
-            | UInt64(self.uuid.9 ) <<  8
-            | UInt64(self.uuid.10) << (8 * 2)
-            | UInt64(self.uuid.11) << (8 * 3)
-            | UInt64(self.uuid.12) << (8 * 4)
-            | UInt64(self.uuid.13) << (8 * 5)
-            | UInt64(self.uuid.14) << (8 * 6)
-            | UInt64(self.uuid.15) << (8 * 7)
+              UInt64(self.uuid.15)
+            | UInt64(self.uuid.14) <<  8
+            | UInt64(self.uuid.13) << (8 * 2)
+            | UInt64(self.uuid.12) << (8 * 3)
+            | UInt64(self.uuid.11) << (8 * 4)
+            | UInt64(self.uuid.10) << (8 * 5)
+            | UInt64(self.uuid.9 ) << (8 * 6)
+            | UInt64(self.uuid.8 ) << (8 * 7)
         )
     }
     
@@ -55,23 +55,23 @@ public extension UUID {
         let b = integers.1
         
         self.init(uuid: (
-            UInt8( a             & 0xFF),
-            UInt8((a >>  8     ) & 0xFF),
-            UInt8((a >> (8 * 2)) & 0xFF),
-            UInt8((a >> (8 * 3)) & 0xFF),
-            UInt8((a >> (8 * 4)) & 0xFF),
-            UInt8((a >> (8 * 5)) & 0xFF),
-            UInt8((a >> (8 * 6)) & 0xFF),
             UInt8((a >> (8 * 7)) & 0xFF),
+            UInt8((a >> (8 * 6)) & 0xFF),
+            UInt8((a >> (8 * 5)) & 0xFF),
+            UInt8((a >> (8 * 4)) & 0xFF),
+            UInt8((a >> (8 * 3)) & 0xFF),
+            UInt8((a >> (8 * 2)) & 0xFF),
+            UInt8((a >>  8     ) & 0xFF),
+            UInt8( a             & 0xFF),
             
-            UInt8( b             & 0xFF),
-            UInt8((b >>  8     ) & 0xFF),
-            UInt8((b >> (8 * 2)) & 0xFF),
-            UInt8((b >> (8 * 3)) & 0xFF),
-            UInt8((b >> (8 * 4)) & 0xFF),
-            UInt8((b >> (8 * 5)) & 0xFF),
+            UInt8((b >> (8 * 7)) & 0xFF),
             UInt8((b >> (8 * 6)) & 0xFF),
-            UInt8((b >> (8 * 7)) & 0xFF)
+            UInt8((b >> (8 * 5)) & 0xFF),
+            UInt8((b >> (8 * 4)) & 0xFF),
+            UInt8((b >> (8 * 3)) & 0xFF),
+            UInt8((b >> (8 * 2)) & 0xFF),
+            UInt8((b >>  8     ) & 0xFF),
+            UInt8( b             & 0xFF)
         ))
     }
     
