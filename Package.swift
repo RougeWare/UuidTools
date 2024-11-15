@@ -7,16 +7,24 @@ let package = Package(
     name: "kyuuid",
     
     platforms: [
-        .macOS(.v13)
+        .macOS(.v13),
+        .iOS(.v16),
+        .tvOS(.v16),
+    ],
+    
+    products: [
+        .executable(name: "kyuuid", targets: ["kyuuid"]),
+        .library(name: "UuidTools", targets: ["UuidTools"]),
     ],
     
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.0"),
     ],
+    
     targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
-        .target(name: "UuidTools"),
+        .target(
+            name: "UuidTools"
+        ),
         
         .executableTarget(
             name: "kyuuid",
